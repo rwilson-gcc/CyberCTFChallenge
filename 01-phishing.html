@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 01: Phishing | CyberSec Academy</title>
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/01-phishing.css">
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <a href="index.html" class="logo">CYBER<span>SEC</span> Academy</a>
+  <div class="nav-links">
+    <a href="01-phishing.html" class="active">Phishing</a>
+    <a href="02-passwords.html">Passwords</a>
+    <a href="03-sql-injection.html">SQL Injection</a>
+    <a href="04-xss.html">XSS</a>
+    <a href="05-social-engineering.html">Social Eng.</a>
+    <a href="06-challenge.html" class="challenge">⚑ Challenge</a>
+  </div>
+</nav>
+<main class="page-main">
+  <div class="module-num">// MODULE 01</div>
+  <h1>Phishing Attacks</h1>
+  <p class="subtitle">Learn to identify deceptive emails and fake websites designed to steal your credentials or install malware.</p>
+
+  <div class="section-label">Tell Me</div>
+  <h2>What is Phishing?</h2>
+  <p>Phishing is a cyberattack where criminals impersonate legitimate organisations via email, SMS, or fake websites to trick victims into revealing sensitive information — passwords, credit card numbers, or personal data.</p>
+  <p>The name comes from "fishing" — attackers cast a wide net (mass emails) hoping someone takes the bait. Spear phishing is targeted at a specific individual using personal details.</p>
+  <div class="info-grid">
+    <div class="info-card"><div class="icon">📧</div><h3>Email Phishing</h3><p>Bulk emails impersonating banks, HMRC, or services like PayPal or Amazon to steal logins.</p></div>
+    <div class="info-card"><div class="icon">🎯</div><h3>Spear Phishing</h3><p>Targeted attacks using personal info (name, job role) to appear highly convincing.</p></div>
+    <div class="info-card"><div class="icon">📱</div><h3>Smishing</h3><p>SMS phishing — fake texts claiming to be parcel delivery, banks, or HMRC.</p></div>
+    <div class="info-card"><div class="icon">📞</div><h3>Vishing</h3><p>Voice phishing — phone calls from "tech support" or "your bank" creating urgency.</p></div>
+  </div>
+  <h2>Common Red Flags</h2>
+  <div class="info-grid">
+    <div class="info-card"><div class="icon">🚩</div><h3>Urgency</h3><p>"Act now or your account will be suspended!" Pressure tactics bypass rational thinking.</p></div>
+    <div class="info-card"><div class="icon">🚩</div><h3>Suspicious Sender</h3><p>support@paypa1-secure.com vs support@paypal.com — look carefully at the domain.</p></div>
+    <div class="info-card"><div class="icon">🚩</div><h3>Mismatched Links</h3><p>Hover over links before clicking. The display text may say one thing; the URL another.</p></div>
+    <div class="info-card"><div class="icon">🚩</div><h3>Generic Greetings</h3><p>"Dear Valued Customer" — legitimate companies usually use your actual name.</p></div>
+  </div>
+  <div class="warning-box">
+    <p><strong>⚠ Remember:</strong> No legitimate bank, government body, or major company will ever ask for your password, PIN, or full card number via email.</p>
+  </div>
+
+  <div class="section-label">Show Me</div>
+  <h2>Spot the Red Flags</h2>
+  <p>Below is a simulated phishing email. Click the buttons to highlight each red flag.</p>
+  <div class="demo-container">
+    <div class="demo-bar">
+      <div class="demo-dots">
+        <div class="demo-dot" style="background:#ff5f57"></div>
+        <div class="demo-dot" style="background:#febc2e"></div>
+        <div class="demo-dot" style="background:#28c840"></div>
+      </div>
+      <span class="demo-label">// SIMULATED EMAIL CLIENT</span>
+    </div>
+    <div class="demo-body">
+      <div class="fake-email">
+        <div class="email-header">
+          <div class="email-row"><span class="email-label">From:</span> <span class="email-from" id="email-from">security-alert@barclays-online-verify.com</span></div>
+          <div class="email-row"><span class="email-label">To:</span> <span>you@example.com</span></div>
+          <div class="email-row"><span class="email-label">Subject:</span> <span class="email-subject-line" id="email-subject">⚠ URGENT: Your account has been compromised — verify immediately</span></div>
+        </div>
+        <div class="email-body">
+          <p style="margin-bottom:0.75rem" id="email-greeting">Dear Valued Customer,</p>
+          <p style="margin-bottom:0.75rem" id="email-body1">We have detected <strong>suspicious login activity</strong> on your Barclays account from an unknown device in Romania.</p>
+          <p style="margin-bottom:0.75rem" id="email-body2">You must verify your identity within <strong>24 hours</strong> or your account will be permanently closed and funds held for investigation.</p>
+          <p style="margin-bottom:0.75rem">Click the secure link below to verify your account immediately:</p>
+          <a class="email-link" id="email-link" href="javascript:void(0)" onclick="alert('Simulation only — never click links in suspicious emails!')">http://barclays-secure-verify.account-protection.co/login?ref=susp123</a>
+          <br><br>
+          <span class="email-btn" onclick="alert('Simulation only!')">Verify My Account Now</span>
+        </div>
+      </div>
+      <div style="margin-top:1.5rem">
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0.75rem">Click to highlight each red flag:</p>
+        <button class="flag-btn" onclick="highlightFlag('sender')">🚩 Fake Sender Domain</button>
+        <button class="flag-btn" onclick="highlightFlag('urgency')">🚩 False Urgency</button>
+        <button class="flag-btn" onclick="highlightFlag('greeting')">🚩 Generic Greeting</button>
+        <button class="flag-btn" onclick="highlightFlag('link')">🚩 Suspicious URL</button>
+        <button class="flag-btn" onclick="highlightFlag('threat')">🚩 Threatening Language</button>
+        <button class="flag-btn" onclick="highlightFlag('all')" style="border-color:var(--accent);color:var(--accent)">Show All</button>
+      </div>
+      <div id="flag-info"><span id="flag-info-text"></span></div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">URL Analyser</h2>
+  <p>Practice identifying suspicious URLs. Type a URL below to analyse it.</p>
+  <div class="url-tool">
+    <div class="url-input-row">
+      <input class="url-input" id="urlInput" type="text" placeholder="e.g. http://paypa1-secure.co.uk/login" onkeydown="if(event.key==='Enter')checkUrl()">
+      <button class="check-btn" onclick="checkUrl()">ANALYSE →</button>
+    </div>
+    <div id="urlResult" class="url-result"></div>
+    <p style="font-size:0.75rem;color:var(--muted);margin-top:0.75rem">Try: barclays-secure.com · paypa1.com · https://gov.uk · amazon-account-verify.net</p>
+  </div>
+
+  <div class="section-label">Knowledge Check</div>
+  <div class="quiz-q">An email from "support@amaz0n-customer.net" asks you to update your payment details urgently. What should you do?</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" onclick="answerQuiz(this, false)">Click the link and update your details — better safe than sorry</button>
+    <button class="quiz-opt" onclick="answerQuiz(this, false)">Reply to the email asking if it's legitimate</button>
+    <button class="quiz-opt" onclick="answerQuiz(this, true)">Go directly to Amazon's official website by typing it in your browser</button>
+    <button class="quiz-opt" onclick="answerQuiz(this, false)">Forward it to colleagues to warn them</button>
+  </div>
+  <div class="quiz-feedback" id="qfeedback"><span id="qfeedback-text"></span></div>
+
+  <div class="nav-bottom">
+    <a href="index.html" class="nav-link">← Home</a>
+    <a href="02-passwords.html" class="nav-link next">Module 02: Passwords →</a>
+  </div>
+</main>
+<script src="js/01-phishing.js"></script>
+</body>
+</html>

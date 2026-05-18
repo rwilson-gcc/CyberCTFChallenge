@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 04: Cross-Site Scripting | CyberSec Academy</title>
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/04-xss.css">
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <a href="index.html" class="logo">CYBER<span>SEC</span> Academy</a>
+  <div class="nav-links">
+    <a href="01-phishing.html">Phishing</a>
+    <a href="02-passwords.html">Passwords</a>
+    <a href="03-sql-injection.html">SQL Injection</a>
+    <a href="04-xss.html" class="active">XSS</a>
+    <a href="05-social-engineering.html">Social Eng.</a>
+    <a href="06-challenge.html" class="challenge">⚑ Challenge</a>
+  </div>
+</nav>
+<main class="page-main">
+  <div class="module-num">// MODULE 04</div>
+  <h1>Cross-Site Scripting</h1>
+  <p class="subtitle">Explore how attackers inject malicious scripts into web pages viewed by other users — and how proper sanitisation stops it.</p>
+
+  <div class="section-label">Tell Me</div>
+  <h2>What is XSS?</h2>
+  <p>Cross-Site Scripting (XSS) happens when a web application includes unvalidated user input in its HTML output. An attacker can inject JavaScript that runs in other users' browsers — stealing session cookies, redirecting to phishing sites, or defacing the page.</p>
+  <div class="info-grid">
+    <div class="info-card"><h3>💬 Stored XSS</h3><p>Malicious script is saved in the database (e.g. in a comment) and executes for every user who views it.</p></div>
+    <div class="info-card"><h3>🔗 Reflected XSS</h3><p>Script is embedded in a URL. When a victim clicks the link, the server reflects it back in the response.</p></div>
+    <div class="info-card"><h3>🏠 DOM-based XSS</h3><p>The attack payload is executed via client-side JavaScript manipulating the DOM — the server may never see it.</p></div>
+    <div class="info-card"><h3>🍪 Cookie Theft</h3><p>document.cookie reveals session tokens. Attackers send these to their server to hijack logged-in sessions.</p></div>
+  </div>
+
+  <h2 style="margin-top:2rem">The Vulnerable Pattern</h2>
+  <div class="code-block">
+    <span class="code-comment">// ❌ VULNERABLE — direct innerHTML assignment</span><br>
+    <span class="code-bad">commentDiv.innerHTML = userInput;</span><br><br>
+    <span class="code-comment">// ✓ SAFE — use textContent or escape HTML entities</span><br>
+    <span class="code-good">commentDiv.textContent = userInput; // Treated as text, not HTML</span>
+  </div>
+
+  <div class="section-label">Show Me</div>
+  <h2>Stored XSS Simulation</h2>
+  <p>This simulates a vulnerable comment section that uses innerHTML. Try the payloads below — scripts are shown safely rather than executed.</p>
+
+  <div class="demo-container">
+    <div class="demo-bar">
+      <div class="demo-dots">
+        <div class="demo-dot" style="background:#ff5f57"></div>
+        <div class="demo-dot" style="background:#febc2e"></div>
+        <div class="demo-dot" style="background:#28c840"></div>
+      </div>
+      <span class="demo-label">// SIMULATED VULNERABLE COMMENT SECTION</span>
+    </div>
+    <div class="demo-body">
+      <div style="margin-bottom:1rem">
+        <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem">Try these XSS payloads:</p>
+        <button class="payload-btn" onclick="setPayload('Hello world!')">Normal comment</button>
+        <button class="payload-btn" onclick="setPayload('<b>Bold text</b>')">HTML injection</button>
+        <button class="payload-btn" onclick="setPayload('<script>alert(&quot;XSS!&quot;)<\/script>')">Script tag</button>
+        <button class="payload-btn" onclick="setPayload('<img src=x onerror=alert(&quot;Cookie: &quot;+document.cookie)>')">img onerror</button>
+        <button class="payload-btn" onclick="setPayload('<a href=javascript:alert(&quot;Phished!&quot;)>Click me!</a>')">JS link</button>
+      </div>
+      <div class="fake-comment-section">
+        <div class="comment-title">💬 Comments (3)</div>
+        <div class="comment-item"><div class="author">alice_tech</div><div class="text">Great article, really helpful content!</div></div>
+        <div class="comment-item"><div class="author">bob_dev</div><div class="text">Thanks for sharing this. Very informative.</div></div>
+        <div id="injectedComments"></div>
+        <div class="comment-input-area">
+          <textarea id="xssInput" placeholder="Add a comment...">Hello world!</textarea>
+          <br>
+          <button class="comment-submit" onclick="postVulnerableComment()">Post (Vulnerable ❌)</button>
+          <button class="comment-submit" style="background:#00f5c4;color:#0a0e1a;margin-left:0.5rem" onclick="postSafeComment()">Post (Safe ✓)</button>
+        </div>
+      </div>
+      <div class="analysis-panel" id="analysisPanel">
+        <div class="analysis-row"><span class="analysis-label">Input detected:</span><span class="analysis-val danger" id="ap-input"></span></div>
+        <div class="analysis-row"><span class="analysis-label">Contains script:</span><span class="analysis-val" id="ap-script"></span></div>
+        <div class="analysis-row"><span class="analysis-label">Contains event:</span><span class="analysis-val" id="ap-event"></span></div>
+        <div class="analysis-row"><span class="analysis-label">innerHTML result:</span><span class="analysis-val danger" id="ap-inner"></span></div>
+        <div class="analysis-row"><span class="analysis-label">textContent result:</span><span class="analysis-val safe" id="ap-text"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">Safe vs Unsafe Output</h2>
+  <div class="sanitiser-compare">
+    <div class="san-panel bad">
+      <div class="san-header">❌ VULNERABLE — innerHTML</div>
+      <div class="san-code">element.innerHTML = userInput</div>
+      <div class="san-output">Script executes in browser — attacker wins</div>
+    </div>
+    <div class="san-panel good">
+      <div class="san-header">✓ SAFE — textContent</div>
+      <div class="san-code">element.textContent = userInput</div>
+      <div class="san-output">Rendered as literal text — harmless</div>
+    </div>
+  </div>
+
+  <div class="section-label">Knowledge Check</div>
+  <div class="quiz-q">A website displays user comments using <code>innerHTML</code>. What is the safest fix?</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" onclick="answerQ(this,false)">Filter out the word "script" from user input</button>
+    <button class="quiz-opt" onclick="answerQ(this,false)">Use HTTPS instead of HTTP</button>
+    <button class="quiz-opt" onclick="answerQ(this,true)">Use textContent instead of innerHTML, or escape HTML entities</button>
+    <button class="quiz-opt" onclick="answerQ(this,false)">Limit comments to 280 characters</button>
+  </div>
+  <div class="quiz-feedback" id="qfeedback"><span id="qfeedback-text"></span></div>
+
+  <div class="nav-bottom">
+    <a href="03-sql-injection.html" class="nav-link">← Module 03: SQL Injection</a>
+    <a href="05-social-engineering.html" class="nav-link next">Module 05: Social Engineering →</a>
+  </div>
+</main>
+<script src="js/04-xss.js"></script>
+</body>
+</html>

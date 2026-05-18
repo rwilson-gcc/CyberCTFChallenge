@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Challenge Room | CyberSec Academy</title>
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/06-challenge.css">
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <a href="index.html" class="logo">CYBER<span>SEC</span> Academy</a>
+  <div class="nav-links">
+    <a href="01-phishing.html">Phishing</a>
+    <a href="02-passwords.html">Passwords</a>
+    <a href="03-sql-injection.html">SQL Injection</a>
+    <a href="04-xss.html">XSS</a>
+    <a href="05-social-engineering.html">Social Eng.</a>
+    <a href="06-challenge.html" class="challenge">⚑ Challenge</a>
+  </div>
+</nav>
+<main class="page-main">
+  <div class="challenge-header">
+    <div class="challenge-tag">// FINAL CHALLENGE</div>
+    <h1>CTF Challenge<span class="sub">Capture The Flag</span></h1>
+    <p class="challenge-desc">Apply everything you've learned. Five interconnected puzzles — each reveals a piece of the final flag. No guessing required; each answer can be worked out logically.</p>
+  </div>
+
+  <div class="progress-area">
+    <div class="progress-label">
+      <span>// PROGRESS</span>
+      <span id="progressText">0 / 5 flags captured</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="flags-row">
+      <div class="flag-indicator" id="fi0">⚑ CH01</div>
+      <div class="flag-indicator" id="fi1">⚑ CH02</div>
+      <div class="flag-indicator" id="fi2">⚑ CH03</div>
+      <div class="flag-indicator" id="fi3">⚑ CH04</div>
+      <div class="flag-indicator" id="fi4">⚑ CH05</div>
+    </div>
+  </div>
+
+  <div class="challenge-panels">
+
+    <!-- CH-01 -->
+    <div class="challenge-panel" id="cp0">
+      <div class="panel-header" onclick="togglePanel(0)">
+        <span class="panel-num">CH-01</span>
+        <span class="panel-title">🎣 The Suspicious Email</span>
+        <span class="panel-status" id="ps0">OPEN</span>
+      </div>
+      <div class="panel-body open" id="pb0">
+        <p>An employee received this email. Analyse the headers carefully — the first piece of the flag is hidden in plain sight within the subject line.</p>
+        <div class="email-inspector">
+          <div class="ei-field"><span class="ei-key">Received: </span><span class="ei-val">from mail.secure-bank-alerts.com (195.34.12.88)</span></div>
+          <div class="ei-field"><span class="ei-key">From: </span><span class="ei-suspicious" title="Suspicious domain">alerts@secure-bank-alerts.com</span></div>
+          <div class="ei-field"><span class="ei-key">Reply-To: </span><span class="ei-suspicious" title="Different from From">collect@data-harvest-net.ru</span></div>
+          <div class="ei-field"><span class="ei-key">To: </span><span class="ei-val">employee@targetcorp.com</span></div>
+          <div class="ei-field"><span class="ei-key">Subject: </span><span class="ei-val">Urgent: Verify your account — ref FLAG_PART1_CYBER</span></div>
+          <div class="ei-field"><span class="ei-key">X-Mailer: </span><span class="ei-val">Suspicious_Bulk_Mailer_v2</span></div>
+        </div>
+        <p style="margin-top:1rem">What is the flag part after <code>FLAG_PART1_</code> in the subject line?</p>
+        <div class="answer-row">
+          <input class="answer-input" id="a0" placeholder="Flag part 1..." maxlength="20">
+          <button class="submit-btn" onclick="checkAnswer(0)">Submit</button>
+        </div>
+        <button class="hint-btn" onclick="toggleHint(0)">💡 Hint</button>
+        <div class="hint-text" id="h0">Look at the Subject line carefully. The flag part comes after "FLAG_PART1_".</div>
+        <div class="answer-feedback" id="af0"></div>
+      </div>
+    </div>
+
+    <!-- CH-02 -->
+    <div class="challenge-panel" id="cp1">
+      <div class="panel-header" onclick="togglePanel(1)">
+        <span class="panel-num">CH-02</span>
+        <span class="panel-title">🔐 The Encrypted Message</span>
+        <span class="panel-status" id="ps1">OPEN</span>
+      </div>
+      <div class="panel-body" id="pb1">
+        <p>A recovered attacker note uses a Caesar cipher. Use the decoder below to find the correct shift and read the message. The flag part is the decoded last word.</p>
+        <div class="terminal">
+          <div class="terminal-bar">recovered_message.txt</div>
+          <div class="terminal-body">
+            <span class="t-out">Encoded: </span><span class="t-highlight">BUUBDL WFDUPS: TPDJBM</span><br>
+            <span class="t-out">Shift: unknown — try values 1–25</span>
+          </div>
+        </div>
+        <div class="cipher-row">
+          <div class="cipher-label">Shift value: <span id="shiftVal">1</span></div>
+          <input type="range" class="cipher-slider" min="1" max="25" value="1" oninput="updateCipher(this.value)">
+          <div class="cipher-label">Decoded output:</div>
+          <div class="cipher-display" id="cipherOutput">—</div>
+        </div>
+        <p>What is the decoded last word (after the colon)?</p>
+        <div class="answer-row">
+          <input class="answer-input" id="a1" placeholder="Decoded word..." maxlength="20">
+          <button class="submit-btn" onclick="checkAnswer(1)">Submit</button>
+        </div>
+        <button class="hint-btn" onclick="toggleHint(1)">💡 Hint</button>
+        <div class="hint-text" id="h1">Try shift value 1. The decoded message should be recognisable English words. The flag is the last word.</div>
+        <div class="answer-feedback" id="af1"></div>
+      </div>
+    </div>
+
+    <!-- CH-03 -->
+    <div class="challenge-panel" id="cp2">
+      <div class="panel-header" onclick="togglePanel(2)">
+        <span class="panel-num">CH-03</span>
+        <span class="panel-title">💉 The Broken Query</span>
+        <span class="panel-status" id="ps2">OPEN</span>
+      </div>
+      <div class="panel-body" id="pb2">
+        <p>A server log shows a sequence of login attempts. One entry contains a successful SQL injection payload. Identify the username used in that attempt.</p>
+        <div class="terminal">
+          <div class="terminal-bar">access.log — login attempts</div>
+          <div class="terminal-body">
+            <span class="t-out">[09:12:03] </span><span class="t-cmd">LOGIN FAIL</span><span class="t-out"> user=alice pw=password123</span><br>
+            <span class="t-out">[09:12:47] </span><span class="t-cmd">LOGIN FAIL</span><span class="t-out"> user=admin pw=admin</span><br>
+            <span class="t-out">[09:13:01] </span><span class="t-cmd">LOGIN FAIL</span><span class="t-out"> user=root pw=root123</span><br>
+            <span class="t-out">[09:13:29] </span><span class="t-cmd">LOGIN FAIL</span><span class="t-out"> user=administrator pw=Pa$$w0rd</span><br>
+            <span class="t-out">[09:14:02] </span><span class="t-highlight">LOGIN SUCCESS</span><span class="t-out"> user=</span><span class="t-flag">admin'--</span><span class="t-out"> pw=anything</span><br>
+            <span class="t-out">[09:14:02] </span><span class="t-cmd">DB QUERY:</span><span class="t-out"> SELECT * FROM users WHERE user='admin'--' AND pw='anything'</span>
+          </div>
+        </div>
+        <p>What is the username string that achieved the SQL injection bypass? (Enter exactly as shown in the log)</p>
+        <div class="answer-row">
+          <input class="answer-input" id="a2" placeholder="Username used..." maxlength="30">
+          <button class="submit-btn" onclick="checkAnswer(2)">Submit</button>
+        </div>
+        <button class="hint-btn" onclick="toggleHint(2)">💡 Hint</button>
+        <div class="hint-text" id="h2">Look for the LOGIN SUCCESS entry. The username contains special SQL characters. Enter exactly what appears after "user=" in that line.</div>
+        <div class="answer-feedback" id="af2"></div>
+      </div>
+    </div>
+
+    <!-- CH-04 -->
+    <div class="challenge-panel" id="cp3">
+      <div class="panel-header" onclick="togglePanel(3)">
+        <span class="panel-num">CH-04</span>
+        <span class="panel-title">📜 The Script Smuggler</span>
+        <span class="panel-status" id="ps3">OPEN</span>
+      </div>
+      <div class="panel-body" id="pb3">
+        <p>A comment database was dumped. One comment contains an XSS payload. Identify which one and enter the JavaScript function name being called.</p>
+        <table class="hash-table">
+          <thead><tr><th>ID</th><th>Author</th><th>Comment content</th></tr></thead>
+          <tbody>
+            <tr><td>001</td><td>user_alice</td><td>Great post, really useful info!</td></tr>
+            <tr><td>002</td><td>user_bob</td><td>I disagree with point 3 but overall good.</td></tr>
+            <tr><td>003</td><td>attacker_x</td><td>&lt;img src=x onerror=stealCookies()&gt;</td></tr>
+            <tr><td>004</td><td>user_carol</td><td>Thanks for writing this up clearly.</td></tr>
+            <tr><td>005</td><td>user_dave</td><td>When is part 2 coming out?</td></tr>
+          </tbody>
+        </table>
+        <p>Which JavaScript function is the attacker calling? Enter just the function name without parentheses.</p>
+        <div class="answer-row">
+          <input class="answer-input" id="a3" placeholder="Function name..." maxlength="30">
+          <button class="submit-btn" onclick="checkAnswer(3)">Submit</button>
+        </div>
+        <button class="hint-btn" onclick="toggleHint(3)">💡 Hint</button>
+        <div class="hint-text" id="h3">Look for the &lt;img&gt; tag with an onerror event handler. The function name follows "onerror=".</div>
+        <div class="answer-feedback" id="af3"></div>
+      </div>
+    </div>
+
+    <!-- CH-05 -->
+    <div class="challenge-panel" id="cp4">
+      <div class="panel-header" onclick="togglePanel(4)">
+        <span class="panel-num">CH-05</span>
+        <span class="panel-title">🧩 Assemble the Flag</span>
+        <span class="panel-status" id="ps4">LOCKED</span>
+      </div>
+      <div class="panel-body" id="pb4">
+        <p>Combine your four answers in order, separated by underscores, and submit as: <code>FLAG{part1_part2_part3_part4}</code></p>
+        <div class="terminal">
+          <div class="terminal-bar">flag_assembler.sh</div>
+          <div class="terminal-body" id="flagAssembler">
+            <span class="t-out">Waiting for all parts...</span>
+          </div>
+        </div>
+        <p>Enter your assembled flag below:</p>
+        <div class="answer-row">
+          <input class="answer-input" id="a4" placeholder="FLAG{...}" maxlength="80">
+          <button class="submit-btn" onclick="checkAnswer(4)">Submit</button>
+        </div>
+        <button class="hint-btn" onclick="toggleHint(4)">💡 Hint</button>
+        <div class="hint-text" id="h4">Format: FLAG{CYBER_SOCIAL_admin'--_stealCookies}</div>
+        <div class="answer-feedback" id="af4"></div>
+      </div>
+    </div>
+
+  </div><!-- end challenge-panels -->
+
+  <div class="final-flag" id="finalFlag">
+    <div class="congrats">🎉 Challenge Complete!</div>
+    <p style="color:var(--muted)">You've demonstrated knowledge across all five cybersecurity domains.</p>
+    <div class="flag-text">FLAG{CYBER_SOCIAL_admin'--_stealCookies}</div>
+    <p style="margin-top:1rem;font-size:0.8rem;color:var(--muted)">Skills demonstrated: Phishing analysis · Cryptography · SQL Injection · XSS · Logical reasoning</p>
+    <a href="index.html" style="display:inline-block;margin-top:1.5rem;padding:0.6rem 1.5rem;background:#00f5c4;color:#0a0e1a;font-weight:700;text-decoration:none;font-family:var(--font-mono);font-size:0.8rem;border-radius:3px;">← Back to Modules</a>
+  </div>
+
+  <div class="nav-bottom">
+    <a href="05-social-engineering.html" class="nav-link">← Module 05: Social Engineering</a>
+  </div>
+</main>
+<script src="js/06-challenge.js"></script>
+</body>
+</html>

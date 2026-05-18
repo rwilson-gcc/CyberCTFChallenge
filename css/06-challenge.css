@@ -1,0 +1,93 @@
+/* =============================================
+   06-challenge.css
+   ============================================= */
+
+:root {
+  --accent: #ff6b35;
+  --accent-light: #fdba74;
+  --accent-green: #00f5c4;
+  --border: rgba(255, 107, 53, 0.2);
+}
+
+/* Header */
+.challenge-header { text-align: center; margin-bottom: 3rem; }
+.challenge-tag {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 1rem; border: 1px solid var(--border);
+  padding: 0.3rem 1rem; display: inline-block;
+}
+h1 .sub { display: block; color: var(--accent); font-size: 0.6em; }
+.challenge-desc { color: var(--muted); max-width: 600px; margin: 0 auto; line-height: 1.7; }
+
+/* Progress */
+.progress-area {
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 1.25rem; border-radius: 4px; margin-bottom: 2.5rem;
+}
+.progress-label {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted);
+  letter-spacing: 0.1em; display: flex; justify-content: space-between; margin-bottom: 0.6rem;
+}
+.progress-bar-bg { background: var(--surface2); height: 6px; border-radius: 3px; overflow: hidden; }
+.progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.5s; border-radius: 3px; }
+.flags-row { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+.flag-indicator {
+  flex: 1; height: 28px; border: 1px solid var(--border); border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); transition: all 0.4s;
+}
+.flag-indicator.captured { background: rgba(0, 245, 196, 0.1); border-color: var(--accent-green); color: var(--accent-green); }
+
+/* Challenge panels */
+.challenge-panels { display: flex; flex-direction: column; gap: 1.5rem; }
+.challenge-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; transition: border-color 0.3s; }
+.challenge-panel.solved { border-color: rgba(0, 245, 196, 0.4); }
+.panel-header {
+  background: var(--surface2); padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 1rem;
+  cursor: pointer; user-select: none;
+}
+.panel-num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); min-width: 70px; }
+.panel-title { font-size: 0.95rem; font-weight: 700; flex: 1; }
+.panel-status { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; }
+.panel-status.solved-status { color: var(--accent-green); }
+.panel-body { padding: 1.5rem; display: none; }
+.panel-body.open { display: block; }
+
+/* Caesar cipher */
+.cipher-row { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+.cipher-slider { width: 100%; accent-color: var(--accent); }
+.cipher-display { font-family: var(--font-mono); font-size: 0.85rem; line-height: 2; letter-spacing: 0.15em; color: var(--accent-light); }
+.cipher-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); margin-bottom: 0.25rem; }
+
+/* Email inspector */
+.email-inspector {
+  background: #1a1a2e; border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px; padding: 1.25rem;
+  font-family: 'Courier New', monospace; font-size: 12px; color: #8892b0;
+}
+.ei-field { margin-bottom: 0.5rem; }
+.ei-key { color: #64748b; }
+.ei-val { color: #cdd6f4; }
+.ei-suspicious { color: #f87171; cursor: help; border-bottom: 1px dashed #f87171; }
+
+/* Hash / log table */
+.hash-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.75rem; margin: 1rem 0; }
+.hash-table th { background: rgba(255, 107, 53, 0.15); color: var(--accent-light); padding: 0.4rem 0.75rem; border: 1px solid var(--border); text-align: left; }
+.hash-table td { padding: 0.4rem 0.75rem; border: 1px solid rgba(255, 255, 255, 0.05); color: #94a3b8; }
+.hash-table tr:nth-child(even) td { background: rgba(255, 255, 255, 0.02); }
+
+/* Final flag */
+.final-flag {
+  display: none;
+  background: linear-gradient(135deg, rgba(0, 245, 196, 0.08), rgba(0, 245, 196, 0.02));
+  border: 1px solid rgba(0, 245, 196, 0.4);
+  padding: 2rem; text-align: center; border-radius: 4px; margin-top: 2rem;
+}
+.final-flag.show { display: block; }
+.flag-text { font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent-green); letter-spacing: 0.1em; margin: 1rem 0; }
+.congrats { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+
+.nav-bottom { display: flex; justify-content: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); }

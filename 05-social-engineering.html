@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 05: Social Engineering | CyberSec Academy</title>
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/05-social-engineering.css">
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <a href="index.html" class="logo">CYBER<span>SEC</span> Academy</a>
+  <div class="nav-links">
+    <a href="01-phishing.html">Phishing</a>
+    <a href="02-passwords.html">Passwords</a>
+    <a href="03-sql-injection.html">SQL Injection</a>
+    <a href="04-xss.html">XSS</a>
+    <a href="05-social-engineering.html" class="active">Social Eng.</a>
+    <a href="06-challenge.html" class="challenge">⚑ Challenge</a>
+  </div>
+</nav>
+<main class="page-main">
+  <div class="module-num">// MODULE 05</div>
+  <h1>Social Engineering</h1>
+  <p class="subtitle">Learn how attackers exploit human psychology — trust, authority, urgency — to bypass technical security entirely.</p>
+
+  <div class="section-label">Tell Me</div>
+  <h2>The Human Firewall</h2>
+  <p>Technical defences can be perfect, but a single employee tricked into revealing credentials can bring an entire organisation down. Social engineering targets human psychology, not software. Over 90% of successful cyberattacks involve social engineering at some stage.</p>
+  <div class="info-grid">
+    <div class="info-card"><h3>🎭 Pretexting</h3><p>Creating a fabricated scenario to extract information — "I'm from IT, I need your login to fix your account."</p></div>
+    <div class="info-card"><h3>🎁 Baiting</h3><p>Leaving infected USB drives in car parks or offering "free software" that contains malware.</p></div>
+    <div class="info-card"><h3>🚪 Tailgating</h3><p>Physically following an authorised person through a secure door — exploiting politeness.</p></div>
+    <div class="info-card"><h3>📞 Vishing</h3><p>Voice phishing — impersonating bank staff, HMRC, or tech support to extract data over the phone.</p></div>
+  </div>
+
+  <h2 style="margin-top:2rem">Psychological Triggers Used</h2>
+  <div class="info-grid">
+    <div class="info-card"><h3>⚡ Urgency</h3><p>"Your account will be deleted in 1 hour!" — rushing people past their critical thinking.</p></div>
+    <div class="info-card"><h3>🎖 Authority</h3><p>Impersonating IT, management, or government agencies to make requests seem legitimate.</p></div>
+    <div class="info-card"><h3>😰 Fear</h3><p>"We've detected fraud on your account" — fear overrides rational decision-making.</p></div>
+    <div class="info-card"><h3>🤝 Reciprocity</h3><p>Doing a small favour first so the victim feels obligated to help in return.</p></div>
+  </div>
+
+  <div class="section-label">Show Me</div>
+  <h2>Attack Scenario Breakdowns</h2>
+  <p>Select a scenario to see how the attack unfolds and which psychological triggers are being exploited.</p>
+  <div class="scenario-chooser">
+    <button class="scenario-btn active" onclick="showScenario(0)">IT Impersonation Call</button>
+    <button class="scenario-btn" onclick="showScenario(1)">USB Drop Attack</button>
+    <button class="scenario-btn" onclick="showScenario(2)">Fake HR Email</button>
+  </div>
+  <div class="scenario-card" id="scenarioCard">
+    <div class="scenario-header">
+      <span class="scenario-icon" id="scIcon">📞</span>
+      <span class="scenario-title" id="scTitle">// IT IMPERSONATION CALL</span>
+    </div>
+    <div class="scenario-body" id="scBody"></div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">What Would You Do?</h2>
+  <p>Work through these real-world scenarios and choose the correct response.</p>
+  <div class="decision-game">
+    <div class="score-track">Score: <span id="gameScore">0</span> / <span id="gameTotal">4</span></div>
+    <div class="scenario-text" id="gameScenario"></div>
+    <div class="decision-opts" id="gameOpts"></div>
+    <div class="decision-feedback" id="gameFeedback"></div>
+    <button class="next-scenario-btn" id="nextBtn" onclick="nextScenario()">Next Scenario →</button>
+  </div>
+
+  <div class="nav-bottom">
+    <a href="04-xss.html" class="nav-link">← Module 04: XSS</a>
+    <a href="06-challenge.html" class="nav-link next">⚑ Final Challenge →</a>
+  </div>
+</main>
+<script src="js/05-social-engineering.js"></script>
+</body>
+</html>

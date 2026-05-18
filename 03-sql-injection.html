@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 03: SQL Injection | CyberSec Academy</title>
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/03-sql-injection.css">
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <a href="index.html" class="logo">CYBER<span>SEC</span> Academy</a>
+  <div class="nav-links">
+    <a href="01-phishing.html">Phishing</a>
+    <a href="02-passwords.html">Passwords</a>
+    <a href="03-sql-injection.html" class="active">SQL Injection</a>
+    <a href="04-xss.html">XSS</a>
+    <a href="05-social-engineering.html">Social Eng.</a>
+    <a href="06-challenge.html" class="challenge">⚑ Challenge</a>
+  </div>
+</nav>
+<main class="page-main">
+  <div class="module-num">// MODULE 03</div>
+  <h1>SQL Injection</h1>
+  <p class="subtitle">Learn how attackers manipulate database queries through user input — and how to stop them.</p>
+
+  <div class="section-label">Tell Me</div>
+  <h2>What is SQL Injection?</h2>
+  <p>SQL Injection (SQLi) occurs when user-supplied data is inserted directly into a SQL query without proper sanitisation. An attacker can craft input that changes the query's logic — bypassing authentication, extracting data, or even deleting databases.</p>
+  <p>It's been the #1 web vulnerability for decades. A single vulnerable login form can expose an entire database of user records.</p>
+  <div class="info-grid">
+    <div class="info-card"><h3>🔓 Auth Bypass</h3><p>Input like <code>' OR '1'='1</code> can make a login query always return true, bypassing passwords entirely.</p></div>
+    <div class="info-card"><h3>📦 Data Extraction</h3><p>UNION-based injections let attackers append additional SELECT statements to retrieve sensitive tables.</p></div>
+    <div class="info-card"><h3>💣 Data Destruction</h3><p>If the app has write permissions, attackers can run DROP TABLE or DELETE to destroy data.</p></div>
+    <div class="info-card"><h3>🕵️ Blind SQLi</h3><p>Even without visible output, attackers infer data through true/false responses or timing delays.</p></div>
+  </div>
+
+  <h2 style="margin-top:2rem">The Vulnerable Pattern</h2>
+  <p>A naive login query built with string concatenation is trivially exploitable:</p>
+  <div class="code-block">
+    <span class="code-comment">// ❌ VULNERABLE — never do this</span><br>
+    <span class="code-bad">query = "SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'";</span><br><br>
+    <span class="code-comment">// If username = admin' --</span><br>
+    <span class="code-comment">// Query becomes:</span><br>
+    <span class="code-bad">SELECT * FROM users WHERE username='admin' --' AND password='anything'</span><br>
+    <span class="code-comment">// Everything after -- is a comment! Password check is skipped.</span>
+  </div>
+
+  <div class="section-label">Show Me</div>
+  <h2>Interactive SQL Injection Demo</h2>
+  <p>Try different inputs in this simulated login form to see how SQL injection works. The query is shown in real-time — nothing real is queried.</p>
+
+  <div class="demo-container">
+    <div class="demo-bar">
+      <div class="demo-dots">
+        <div class="demo-dot" style="background:#ff5f57"></div>
+        <div class="demo-dot" style="background:#febc2e"></div>
+        <div class="demo-dot" style="background:#28c840"></div>
+      </div>
+      <span class="demo-label">// SIMULATED VULNERABLE LOGIN — CLIENT-SIDE DEMO ONLY</span>
+    </div>
+    <div class="demo-body">
+      <div class="fake-form">
+        <h3>🔒 Staff Login Portal</h3>
+        <div class="form-field">
+          <label>Username</label>
+          <input type="text" id="sqlUser" value="admin" placeholder="Username" oninput="updateQuery()">
+        </div>
+        <div class="form-field">
+          <label>Password</label>
+          <input type="text" id="sqlPass" value="wrongpassword" placeholder="Password" oninput="updateQuery()">
+        </div>
+        <button class="form-submit" onclick="runQuery()">Login</button>
+      </div>
+
+      <div style="margin-top:1rem">
+        <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem">Try these attack payloads in the Username field:</p>
+        <button class="payload-btn" onclick="setPayload(&quot;admin' --&quot;, '')">admin' --</button>
+        <button class="payload-btn" onclick="setPayload(&quot;' OR '1'='1&quot;, &quot;' OR '1'='1&quot;)">OR 1=1 bypass</button>
+        <button class="payload-btn" onclick="setPayload('admin', 'admin')">Normal login</button>
+      </div>
+
+      <div class="sql-query-display" id="sqlQueryDisplay">
+        <span class="sql-key">SELECT</span> <span class="sql-normal">* </span>
+        <span class="sql-key">FROM</span> <span class="sql-normal">users </span>
+        <span class="sql-key">WHERE</span> <span class="sql-normal">username=</span>
+        <span class="sql-str" id="q-user">'admin'</span>
+        <span class="sql-normal"> AND password=</span>
+        <span class="sql-str" id="q-pass">'wrongpassword'</span>
+      </div>
+
+      <div class="sql-alert" id="sqlAlert"></div>
+      <div class="sql-success" id="sqlSuccess"></div>
+      <table class="sql-result-table" id="sqlResultTable">
+        <thead><tr><th>id</th><th>username</th><th>password_hash</th><th>email</th><th>role</th></tr></thead>
+        <tbody id="sqlResultBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">How to Prevent SQLi</h2>
+  <p>The fix is straightforward: never build SQL queries with string concatenation. Use parameterised queries or prepared statements.</p>
+  <div class="code-block">
+    <span class="code-comment">// ✓ SAFE — parameterised query (Python example)</span><br>
+    <span class="code-good">cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))</span><br><br>
+    <span class="code-comment">// The database treats user input as DATA, never as SQL code.</span><br>
+    <span class="code-comment">// Even if username = "admin' --" it's treated literally, not executed.</span>
+  </div>
+
+  <div class="section-label">Knowledge Check</div>
+  <div class="quiz-q">An attacker enters <code>admin' --</code> as their username with any password. Why does this bypass authentication?</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" onclick="answerQ(this,false)">The -- characters encrypt the password check</button>
+    <button class="quiz-opt" onclick="answerQ(this,true)">The ' closes the string, and -- comments out the rest of the query including the password check</button>
+    <button class="quiz-opt" onclick="answerQ(this,false)">It creates a new admin account automatically</button>
+    <button class="quiz-opt" onclick="answerQ(this,false)">SQL databases ignore special characters in usernames</button>
+  </div>
+  <div class="quiz-feedback" id="qfeedback"><span id="qfeedback-text"></span></div>
+
+  <div class="nav-bottom">
+    <a href="02-passwords.html" class="nav-link">← Module 02: Passwords</a>
+    <a href="04-xss.html" class="nav-link next">Module 04: XSS →</a>
+  </div>
+</main>
+<script src="js/03-sql-injection.js"></script>
+</body>
+</html>

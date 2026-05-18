@@ -48,7 +48,7 @@ cd cybersec-academy
 open index.html
 ```
 
-All files must remain in the same directory for navigation links to work.
+> **Important:** Keep the `css/` and `js/` folders in the same directory as the HTML files. The pages reference their stylesheets and scripts via relative paths (e.g. `css/shared.css`, `js/01-phishing.js`) and will not render correctly if the folder structure is changed.
 
 ---
 
@@ -56,13 +56,32 @@ All files must remain in the same directory for navigation links to work.
 
 ```
 cybersec-academy/
-├── index.html                  # Home page / module selector
-├── 01-phishing.html            # Module 01: Phishing Attacks
-├── 02-passwords.html           # Module 02: Password Security
-├── 03-sql-injection.html       # Module 03: SQL Injection
-├── 04-xss.html                 # Module 04: Cross-Site Scripting
-├── 05-social-engineering.html  # Module 05: Social Engineering
-├── 06-challenge.html           # CTF Challenge Room
+├── index.html                        # Home page / module selector
+├── 01-phishing.html                  # Module 01: Phishing Attacks
+├── 02-passwords.html                 # Module 02: Password Security
+├── 03-sql-injection.html             # Module 03: SQL Injection
+├── 04-xss.html                       # Module 04: Cross-Site Scripting
+├── 05-social-engineering.html        # Module 05: Social Engineering
+├── 06-challenge.html                 # CTF Challenge Room
+│
+├── css/
+│   ├── shared.css                    # Global styles, variables, nav, layout, shared components
+│   ├── index.css                     # Home page styles (hero, module grid, cards)
+│   ├── 01-phishing.css               # Phishing module styles (email sim, URL tool, flag highlights)
+│   ├── 02-passwords.css              # Password module styles (strength meter, brute force sim)
+│   ├── 03-sql-injection.css          # SQL module styles (fake login form, query display, result table)
+│   ├── 04-xss.css                    # XSS module styles (comment section, analysis panel, comparison)
+│   ├── 05-social-engineering.css     # Social engineering styles (scenario cards, chat thread, decision game)
+│   └── 06-challenge.css              # CTF challenge styles (progress bar, panels, flag display)
+│
+├── js/
+│   ├── 01-phishing.js                # Flag highlighting, URL analyser, quiz logic
+│   ├── 02-passwords.js               # Password strength analyser, crack time estimator, brute force sim
+│   ├── 03-sql-injection.js           # SQL query simulator, injection detection, mock database
+│   ├── 04-xss.js                     # Comment section sim, safe vs unsafe output demo, analysis panel
+│   ├── 05-social-engineering.js      # Scenario renderer, decision game engine, scoring
+│   └── 06-challenge.js               # CTF answer checking, progress tracking, Caesar cipher decoder
+│
 ├── README.md
 └── LICENSE
 ```
@@ -100,16 +119,22 @@ The challenge room is self-contained and solvable without external tools. If you
 
 ## Tech Stack
 
-- HTML5
-- CSS3 (custom properties, grid, flexbox)
-- Vanilla JavaScript (no frameworks, no dependencies)
-- Google Fonts (Share Tech Mono, Syne) — loaded via CDN
+- HTML5 — semantic markup, no build step required
+- CSS3 — custom properties, grid, flexbox; split into `shared.css` (global) and per-module stylesheets in `css/`
+- Vanilla JavaScript — no frameworks, no dependencies; one `.js` file per module in `js/`
+- Google Fonts (Share Tech Mono, Syne) — loaded via CDN in `shared.css`
 
 ---
 
 ## Contributing
 
 Pull requests are welcome. If you want to add a new module, fix a bug, or improve the content, feel free to open an issue or submit a PR.
+
+When adding a new module, follow the existing pattern:
+- Create `XX-module-name.html` in the root, referencing `css/shared.css` and `css/XX-module-name.css`
+- Add `css/XX-module-name.css` for any module-specific styles
+- Add `js/XX-module-name.js` for all interactivity
+- Add a nav link in every HTML file
 
 ---
 
